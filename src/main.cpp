@@ -18,7 +18,7 @@ std::vector<GLuint> displayLists;
 
 struct Triangles
 {
-    int count;
+    int count; // vertex / normal vector count
     float * vertices;
     float * normals;
 };
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 
     for(std::vector<Triangles>::iterator it=triangles.begin(); it!=triangles.end(); it++)
     {
-        totalTriangles += (*it).count;
+        totalTriangles += (*it).count / 3;
     }
 
     std::cout << "total number of triangles: " << totalTriangles << std::endl;
@@ -123,10 +123,10 @@ void loadTriangles(char * filename)
         exit(1);
     }
 
-    // triangle count
+    // vertex count
     inf.read((char *)&t.count, sizeof(t.count));
 
-    std::cout << "reading " << t.count << " triangles..." << std::endl;
+    std::cout << "reading " << t.count / 3 << " triangles..." << std::endl;
 
     // allocate memory for triangle vertices and normals
     // if we're using display lists we don't need to store these
