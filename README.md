@@ -22,6 +22,7 @@ Usage
     syntax: ./trianglerender [options] [geometry filenames...]
     options:
      -l   use display lists (default false)
+     -z   zoom factor (default 1, must be >= 1)
 
 Example:
 
