@@ -11,6 +11,8 @@
     #include <GL/glut.h>
 #endif
 
+#define MAX_DISPLAYLIST_SIZE 999999
+
 bool useDisplayLists = false;
 float zoom = 1.;
 
@@ -182,6 +184,18 @@ void loadTriangles(char * filename)
 
         if(useDisplayLists)
         {
+            // start a new display list if necessary
+            if(i % MAX_DISPLAYLIST_SIZE == 0)
+            {
+                glEnd();
+                glEndList();
+                displayLists.push_back(displayListId);
+
+                displayListId = glGenLists(1);
+                glNewList(displayListId, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+            }
+
             glNormal3f(in[0], in[1], in[2]);
             glVertex3f(iv[0], iv[1], iv[2]);
         }
