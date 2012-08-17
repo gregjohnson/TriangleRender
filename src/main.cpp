@@ -12,6 +12,7 @@
 #endif
 
 bool useDisplayLists = false;
+float zoom = 1.;
 
 std::vector<char *> datafiles;
 std::vector<GLuint> displayLists;
@@ -51,6 +52,14 @@ int main(int argc, char **argv)
                 case 'l':
                     useDisplayLists = true;
                     break;
+                case 'z':
+                    if(i+1 < argc)
+                    {
+                        zoom = atof(argv[i+1]);
+                        i++;
+                    }
+
+                    break;
                 default:
                     syntax(argv[0]);
             }
@@ -75,6 +84,7 @@ int main(int argc, char **argv)
 
     glClearColor(0.5, 0.5, 0.5, 1.);
 
+    glEnable(GL_NORMALIZE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -107,6 +117,7 @@ void syntax(char * app)
     std::cerr << "syntax: " << app << " [options] [geometry filenames...]" << std::endl;
     std::cerr << "options:" << std::endl;
     std::cerr << " -l   use display lists (default false)" << std::endl;
+    std::cerr << " -z   zoom factor (default 1, must be >= 1)" << std::endl;
 
     exit(1);
 }
@@ -208,6 +219,8 @@ void display()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+
+    glScalef(zoom, zoom, zoom);
 
     float size = 1. * (maxX - minX);
     glOrtho(-size, size, -size, size, -size, size);
